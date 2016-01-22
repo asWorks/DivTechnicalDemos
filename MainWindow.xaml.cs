@@ -55,7 +55,12 @@ namespace MultipleFoldersFilesSort
             // liste.CopyData();
             
         }
-
+        /// <summary>
+        /// Started das Asynchrone Suchen der Dateien ohne ständige Aktualisierung der UI. 
+        /// Erst nachdem alle Dateien gefunden sind wird die Oberfläsche aktualisiert.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LookUpAsync_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new System.Windows.Forms.FolderBrowserDialog();
