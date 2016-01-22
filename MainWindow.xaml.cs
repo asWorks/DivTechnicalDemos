@@ -58,6 +58,7 @@ namespace MultipleFoldersFilesSort
         /// <summary>
         /// Started das Asynchrone Suchen der Dateien ohne ständige Aktualisierung der UI. 
         /// Erst nachdem alle Dateien gefunden sind wird die Oberfläsche aktualisiert.
+        /// Nur für Git.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
