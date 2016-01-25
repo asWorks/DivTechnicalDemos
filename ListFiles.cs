@@ -157,44 +157,88 @@ namespace MultipleFoldersFilesSort
         public async void SearchFoldersAsync(DirectoryInfo dir)
         {
 
-            var files = dir.GetFiles();
-            if (files.Length > 0)
+            try
             {
+                var files = dir.GetFiles();
+                if (files.Length > 0)
+                {
+                    await Task.Run(() =>
+                    {
+                        foreach (var file in files)
+                        {
+
+                            DispatcherObject.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                            {
+                                FileCount++;
+                                Filelist.Add(file);
+                                FileLengthTotal += file.Length;
+                                if (MaxFileLength < file.Length)
+                                {
+                                    MaxFileLength = file.Length;
+                                }
+                                TimeDone = sWatch.ElapsedMilliseconds;
+                            }));
+
+
+                        }
+                    }
+      );
+                }
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                var x = new FileInfo(dir + "_UnauthorizedAccessException");
                 await Task.Run(() =>
                 {
-                    foreach (var file in files)
+                    DispatcherObject.BeginInvoke(DispatcherPriority.Background, new Action(() =>
                     {
-                       
-                        DispatcherObject.BeginInvoke(DispatcherPriority.Background, new Action(() =>
-                        {
-                            FileCount++;
-                            Filelist.Add(file);
-                            FileLengthTotal += file.Length;
-                            if (MaxFileLength < file.Length)
-                            {
-                                MaxFileLength = file.Length;
-                            }
-                            TimeDone = sWatch.ElapsedMilliseconds;
-                        }));
+                        Filelist.Add(x);
+                    }));
+                });
 
-                       
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+            try
+            {
+                var dirs = dir.GetDirectories();
+                if (dirs.Length > 0)
+                {
+                    foreach (var item in dirs)
+                    {
+                        SearchFoldersAsync(item);
                     }
                 }
-  );
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                var x = new FileInfo(dir + "_UnauthorizedAccessException");
+                await Task.Run(() =>
+                {
+                    DispatcherObject.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                    {
+                        Filelist.Add(x);
+                    }));
+                });
+
+
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
 
-            var dirs = dir.GetDirectories();
-            if (dirs.Length > 0)
-            {
-                foreach (var item in dirs)
-                {
-                    SearchFoldersAsync(item);
-                }
-            }
 
 
         }
-     
+
 
         public async Task<GetFilesAsync> GetData(DirectoryInfo folder)
         {
@@ -209,7 +253,7 @@ namespace MultipleFoldersFilesSort
             //GetFilesAsync res = await GetData(dir);
             Clear();
             GetFilesAsync res = await new GetFilesAsync().RunSearch(dir);
-            
+
 
             Filelist = new ObservableCollection<FileInfo>(res.Filelist);
             FileLengthTotal = res.FileLengthTotal;
