@@ -95,22 +95,23 @@ namespace MultipleFoldersFilesSort
         public async Task SearchFoldersAsync(DirectoryInfo dir)
         {
 
-          
 
-            var files = dir.GetFiles();
-            if (files.Length > 0)
+            try
             {
-                //await Task.Run(() =>
-                //{
+                var files = dir.GetFiles();
+                if (files.Length > 0)
+                {
+
+                   // Console.WriteLine(dir);
                     foreach (var file in files)
                     {
-                    for (double i = 0; i < 100000; i++)
-                    {
-                        var res = Math.Sqrt(i);
-                        // Debug.Print(res.ToString());
-                    }
+                        //for (double i = 0; i < 100000; i++)
+                        //{
+                        //    var res = Math.Sqrt(i);
+                        //    // Debug.Print(res.ToString());
+                        //}
 
-                    FileCount++;
+                        FileCount++;
                         Filelist.Add(file);
                         FileLengthTotal += file.Length;
                         if (MaxFileLength < file.Length)
@@ -120,23 +121,57 @@ namespace MultipleFoldersFilesSort
                         TimeDone = sWatch.ElapsedMilliseconds;
                     };
 
-                
-                }
 
-           
-
-
-            var dirs = dir.GetDirectories();
-            if (dirs.Length > 0)
-            {
-                foreach (var item in dirs)
-                {
-                 await  SearchFoldersAsync(item);
                 }
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                var x = new FileInfo(dir + "_UnauthorizedAccessException");
 
-            
+                Filelist.Add(x);
+
+
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+            try
+            {
+
+                var dirs = dir.GetDirectories();
+                if (dirs.Length > 0)
+                {
+                    foreach (var item in dirs)
+                    {
+                        await SearchFoldersAsync(item);
+                    }
+                }
+
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                var x = new FileInfo(dir + "_UnauthorizedAccessException");
+
+                Filelist.Add(x);
+
+
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+
         }
+
 
         public void Clear()
         {
