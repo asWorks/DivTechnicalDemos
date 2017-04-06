@@ -31,7 +31,7 @@ namespace MultipleFoldersFilesSort
 
 
         private ObservableCollection<FileInfo> _Filelist;
-        public ObservableCollection<FileInfo> Filelist
+        public ObservableCollection<FileInfo>Filelist
         {
             get { return _Filelist; }
             set

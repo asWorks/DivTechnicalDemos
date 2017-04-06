@@ -86,44 +86,44 @@ namespace MultipleFoldersFilesSort
         public async Task<GetFilesAsync> RunSearch(DirectoryInfo dir)
         {
             sWatch.Start();
-             var x= await Task.Factory.StartNew((p) => SearchFoldersAsync((DirectoryInfo)p), dir);
+            var x = await Task.Factory.StartNew((p) => SearchFoldersAsync((DirectoryInfo)p), dir);
             sWatch.Stop();
-             return this;
+            return this;
         }
 
 
         public async Task SearchFoldersAsync(DirectoryInfo dir)
         {
 
-          
+
 
             var files = dir.GetFiles();
             if (files.Length > 0)
             {
                 //await Task.Run(() =>
                 //{
-                    foreach (var file in files)
-                    {
-                    for (double i = 0; i < 100000; i++)
-                    {
-                        var res = Math.Sqrt(i);
-                        // Debug.Print(res.ToString());
-                    }
+                foreach (var file in files)
+                {
+                    //for (double i = 0; i < 100000; i++)
+                    //{
+                    //    var res = Math.Sqrt(i);
+                    //    // Debug.Print(res.ToString());
+                    //}
 
                     FileCount++;
-                        Filelist.Add(file);
-                        FileLengthTotal += file.Length;
-                        if (MaxFileLength < file.Length)
-                        {
-                            MaxFileLength = file.Length;
-                        }
-                        TimeDone = sWatch.ElapsedMilliseconds;
-                    };
+                    Filelist.Add(file);
+                    FileLengthTotal += file.Length;
+                    if (MaxFileLength < file.Length)
+                    {
+                        MaxFileLength = file.Length;
+                    }
+                    TimeDone = sWatch.ElapsedMilliseconds;
+                };
 
-                
-                }
 
-           
+            }
+
+
 
 
             var dirs = dir.GetDirectories();
@@ -131,11 +131,11 @@ namespace MultipleFoldersFilesSort
             {
                 foreach (var item in dirs)
                 {
-                 await  SearchFoldersAsync(item);
+                    await SearchFoldersAsync(item);
                 }
             }
 
-            
+
         }
 
         public void Clear()
