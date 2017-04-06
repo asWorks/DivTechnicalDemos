@@ -30,8 +30,8 @@ namespace MultipleFoldersFilesSort
 
 
 
-        private ObservableCollection<FileInfo> _Filelist;
-        public ObservableCollection<FileInfo>Filelist
+        private ObservableCollectioFileInfoAsync _Filelist;
+        public ObservableCollectioFileInfoAsync Filelist
         {
             get { return _Filelist; }
             set
@@ -201,27 +201,34 @@ namespace MultipleFoldersFilesSort
                 var files = dir.GetFiles();
                 if (files.Length > 0)
                 {
-                    await Task.Run(() =>
+
+
+                    foreach (var file in files)
                     {
-                        foreach (var file in files)
-                        {
-
-                            DispatcherObject.BeginInvoke(DispatcherPriority.Background, new Action(() =>
-                            {
-                                FileCount++;
-                                Filelist.Add(file);
-                                FileLengthTotal += file.Length;
-                                if (MaxFileLength < file.Length)
-                                {
-                                    MaxFileLength = file.Length;
-                                }
-                                TimeDone = sWatch.ElapsedMilliseconds;
-                            }));
-
-
-                        }
+                        Filelist.AddItemAsync(file);
                     }
-      );
+
+      //              await Task.Run(() =>
+      //              {
+      //                  foreach (var file in files)
+      //                  {
+
+      //                      DispatcherObject.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+      //                      {
+      //                          FileCount++;
+      //                          Filelist.Add(file);
+      //                          FileLengthTotal += file.Length;
+      //                          if (MaxFileLength < file.Length)
+      //                          {
+      //                              MaxFileLength = file.Length;
+      //                          }
+      //                          TimeDone = sWatch.ElapsedMilliseconds;
+      //                      }));
+
+
+      //                  }
+      //              }
+      //);
                 }
             }
             catch (UnauthorizedAccessException ex)
@@ -294,7 +301,7 @@ namespace MultipleFoldersFilesSort
             GetFilesAsync res = await new GetFilesAsync().RunSearch(dir);
 
 
-            Filelist = new ObservableCollection<FileInfo>(res.Filelist);
+            Filelist = new ObservableCollectioFileInfoAsync(Dispatcher.CurrentDispatcher,res.Filelist);
             FileLengthTotal = res.FileLengthTotal;
             FileCount = res.FileCount;
             MaxFileLength = res.MaxFileLength;
@@ -307,7 +314,7 @@ namespace MultipleFoldersFilesSort
         {
             if (Filelist == null)
             {
-                Filelist = new ObservableCollection<FileInfo>();
+                Filelist = new ObservableCollectioFileInfoAsync(Dispatcher.CurrentDispatcher);
             }
             if (TempList == null)
             {

@@ -12,19 +12,47 @@ namespace MultipleFoldersFilesSort
    public class ObservableCollectioFileInfoAsync:ObservableCollection<FileInfo>
     {
 
+
+
+
         public Dispatcher DispatcherObject { get; protected set; }
- 
+
+
+
+        private int _FileCount;
+        public int FileCount
+        {
+            get { return _FileCount; }
+            set
+            {
+                if (value != _FileCount)
+                {
+                    _FileCount = value;
+                    OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("FileCount"));
+                    
+                }
+            }
+        }
+
+
+        public ObservableCollectioFileInfoAsync(Dispatcher dispatcher,IEnumerable<FileInfo> collection):base(collection)
+        {
+            DispatcherObject = dispatcher;
+            FileCount = 0;
+
+
+
+        }
 
         public ObservableCollectioFileInfoAsync(Dispatcher dispatcher)
         {
             DispatcherObject = dispatcher;
-           
-            
+            FileCount = 0;
         }
 
      
 
-        async void AddItemAsync(FileInfo item)
+      public  async void AddItemAsync(FileInfo item)
         {
             try
             { 
@@ -36,6 +64,8 @@ namespace MultipleFoldersFilesSort
                     {
 
                         this.Add(item);
+
+                        FileCount++;
 
                     }));
 
