@@ -118,35 +118,74 @@ namespace MultipleFoldersFilesSort
         public void SearchFoldersSyncronous(DirectoryInfo dir)
         {
 
-            var files = dir.GetFiles();
-            if (files.Length > 0)
+            try
             {
 
-                foreach (var file in files)
+                var files = dir.GetFiles();
+                if (files.Length > 0)
                 {
 
-
-                    FileCount++;
-                    Filelist.Add(file);
-                    FileLengthTotal += file.Length;
-                    if (MaxFileLength < file.Length)
+                    foreach (var file in files)
                     {
-                        MaxFileLength = file.Length;
+
+
+                        FileCount++;
+                        Filelist.Add(file);
+                        FileLengthTotal += file.Length;
+                        if (MaxFileLength < file.Length)
+                        {
+                            MaxFileLength = file.Length;
+                        }
+
+                        TimeDone = sWatch.ElapsedMilliseconds;
+
                     }
 
-                    TimeDone = sWatch.ElapsedMilliseconds;
-
                 }
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                var x = new FileInfo(dir + "_UnauthorizedAccessException");
+
+
+                Filelist.Add(x);
+
+
+
 
             }
+            catch (Exception)
+            {
 
-            var dirs = dir.GetDirectories();
+                throw;
+            }
+
+
+            try
+            {
+
+                var dirs = dir.GetDirectories();
             if (dirs.Length > 0)
             {
                 foreach (var item in dirs)
                 {
                     SearchFoldersSyncronous(item);
                 }
+            }
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                var x = new FileInfo(dir + "_UnauthorizedAccessException");
+              
+                        Filelist.Add(x);
+                
+
+
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
 
 
