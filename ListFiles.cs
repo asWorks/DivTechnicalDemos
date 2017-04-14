@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Windows.Threading;
 using System.Diagnostics;
 
@@ -19,6 +20,12 @@ namespace MultipleFoldersFilesSort
         private long fLengthTotal;
         DirectoryInfo searchFolder;
         Stopwatch sWatch;
+
+     
+
+        private int test;
+
+       
 
 
         public virtual Dispatcher DispatcherObject { get; protected set; }
@@ -40,6 +47,23 @@ namespace MultipleFoldersFilesSort
                 {
                     _Filelist = value;
                     OnPropertyChanged("Filelist");
+                    //  isDirty = true;
+                }
+            }
+        }
+
+
+
+        private TestBinding _TestBindingInst;
+        public TestBinding TestBindingInst
+        {
+            get { return _TestBindingInst; }
+            set
+            {
+                if (value != _TestBindingInst)
+                {
+                    _TestBindingInst = value;
+                    OnPropertyChanged("TestBindingInst");
                     //  isDirty = true;
                 }
             }
@@ -112,6 +136,7 @@ namespace MultipleFoldersFilesSort
         {
             DispatcherObject = Dispatcher.CurrentDispatcher;
             sWatch = new Stopwatch();
+            TestBindingInst = new TestBinding();
 
             Clear();
         }
@@ -198,38 +223,41 @@ namespace MultipleFoldersFilesSort
 
             try
             {
-                var files = dir.GetFiles();
-                if (files.Length > 0)
-                {
+                //var files = dir.GetFiles();
+                //if (files.Length > 0)
+                //{
 
 
-                    foreach (var file in files)
-                    {
-                        Filelist.AddItemAsync(file);
-                    }
+                Filelist.AddDirectoryAsync(dir);
 
-      //              await Task.Run(() =>
-      //              {
-      //                  foreach (var file in files)
-      //                  {
+                //foreach (var file in files)
+                //{
+                //    Filelist.AddItemAsync(file);
+                //}
 
-      //                      DispatcherObject.BeginInvoke(DispatcherPriority.Background, new Action(() =>
-      //                      {
-      //                          FileCount++;
-      //                          Filelist.Add(file);
-      //                          FileLengthTotal += file.Length;
-      //                          if (MaxFileLength < file.Length)
-      //                          {
-      //                              MaxFileLength = file.Length;
-      //                          }
-      //                          TimeDone = sWatch.ElapsedMilliseconds;
-      //                      }));
+                //              await Task.Run(() =>
+                //              {
+                //                  foreach (var file in files)
+                //                  {
+
+                //                      DispatcherObject.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                //                      {
+                //                         // FileCount++;
+                //                          TestBindingInst.FileCounter++;
+                //                          Filelist.Add(file);
+                //                          FileLengthTotal += file.Length;
+                //                          if (MaxFileLength < file.Length)
+                //                          {
+                //                              MaxFileLength = file.Length;
+                //                          }
+                //                          TimeDone = sWatch.ElapsedMilliseconds;
+                //                      }));
 
 
-      //                  }
-      //              }
-      //);
-                }
+                //                  }
+                //              }
+                //);
+                //}
             }
             catch (UnauthorizedAccessException ex)
             {

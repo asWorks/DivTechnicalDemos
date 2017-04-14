@@ -41,7 +41,7 @@
             <Button x:Name="LookUpAsync" Content="LookUp Async" HorizontalAlignment="Left" VerticalAlignment="Top"  Click="LookUpAsync_Click"/>
             <Button x:Name="LookUpAsyncYield" Content="LookUp Async Yield" HorizontalAlignment="Left" VerticalAlignment="Top"  Click="LookUpAsyncYield_Click"/>
             <Button x:Name="TestAnonymus" Content="TestAnonymus" HorizontalAlignment="Left" VerticalAlignment="Top" Click="TestAnonymus_Click"/>
-            <TextBlock Text="{Binding FileList.FileCount}" MinWidth="30" />
+            <TextBlock Text="{Binding Filelist.FileCount}" MinWidth="30" />
             <TextBlock Text="{Binding MaxFileLength}" MinWidth="30" />
             <TextBlock Text="{Binding FileLengthTotal}" MinWidth="30" />
             <TextBlock Text="{Binding TimeDone}" MinWidth="30" />
